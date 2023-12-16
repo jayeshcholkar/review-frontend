@@ -4,17 +4,23 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../config/config";
+import Load from "./Loading";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignUp() {
   const navigate = useNavigate();
   const [userError, setUserError] = useState();
   const [user, setUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
+    setLoading(true)
     const formData = new FormData();
     formData.append("profilePic", data.profilePic[0]);
     formData.append("phoneNum", data.phoneNum);
@@ -26,20 +32,21 @@ function SignUp() {
     axios
       .post(`${API_URL}/user/signup`, formData)
       .then((response) => {
-        console.log(response.data);
+        toast.info(response?.data?.message);
         setUser(response.data.success);
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error.response.data);
         setUserError(error.response.data.message);
+        toast(error.response.data.message);
       });
-    console.log(data);
   };
   if (user === true) {
     navigate("/");
   }
   console.log(errors);
-
+if(loading) return <Load/>
   return (
     <div className="max-sm:h-[170vh] h-[150vh] bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500">
       <section className="h-screen">
@@ -188,6 +195,7 @@ function SignUp() {
           </div>
         </div>
       </section>
+      <ToastContainer/>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import CompanyDetails from "./components/CompanyDetails";
 import ResetPass from "./components/ResetPass";
 import Home from "./components/Home";
 
+
 function App() {
   return (
     <div className="">

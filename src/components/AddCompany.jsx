@@ -34,6 +34,7 @@ function AddCompany({ open, setOpen, listApiCall }) {
       });
     console.log(data);
     await listApiCall();
+    setOpen(false);
     window.scroll({
       top: document.body.offsetHeight,
       left: 0, 
@@ -146,9 +147,6 @@ function AddCompany({ open, setOpen, listApiCall }) {
                         />
                       </div>
                       <button
-                        onClick={() => {
-                          setOpen(false);
-                        }}
                         type="submit"
                         className="p-2 px-8 rounded-md text-white font-semibold bg-gradient-to-tl from-indigo-600 via-purple-600 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >

@@ -29,6 +29,7 @@ function AddReview({ open, setOpen, detailApiCall }) {
         console.log(error);
       });
     await detailApiCall();
+    setOpen(false);
   };
   console.log(errors);
 
@@ -114,9 +115,6 @@ function AddReview({ open, setOpen, detailApiCall }) {
                         />
                       </div>
                       <button
-                        onClick={() => {
-                          setOpen(false);
-                        }}
                         type="submit"
                         className="p-2 px-8 rounded-md text-white font-semibold bg-gradient-to-tl from-indigo-600 via-purple-600 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >

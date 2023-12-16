@@ -5,28 +5,35 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ForgetPass from "./ForgetPass";
 import { API_URL } from "../config/config";
+import Load from "./Loading";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function UserLogin() {
   const navigate = useNavigate();
   const [user, setUser] = useState(false);
   const [userError, setUserError] = useState();
   const [open, setOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
+    setLoading(true)
     axios
       .post(`${API_URL}/user/login`, data)
       .then((response) => {
         localStorage.setItem("user", response.data.token);
         setUser(response.data.success);
+        toast.info(response.data.message);
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error.response.data.message);
         setUserError(error.response.data.message);
+        toast.error(error.response.data.message);
       });
   };
   if (user === true) {
@@ -34,6 +41,9 @@ function UserLogin() {
   }
   // console.log(data)};
   console.log(errors);
+
+  if(loading) return <Load/>
+
   return (
     <div className="max-sm:h-[130vh] bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500">
       <ForgetPass setOpen={setOpen} open={open} />
@@ -122,6 +132,7 @@ function UserLogin() {
           </div>
         </div>
       </section>
+      <ToastContainer/>
     </div>
   );
 }
